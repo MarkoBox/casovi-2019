@@ -6,7 +6,7 @@ from posts.controllers import post
 from logging.config import dictConfig
 from logging.handlers import RotatingFileHandler
 import logging
-
+from flask_migrate import Migrate
 
 def create_app():
     dictConfig({
@@ -30,6 +30,7 @@ def create_app():
     app.config.from_object(config[SELECTED_CONFIG])
 
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     # Register the blueprints
     app.register_blueprint(user, url_prefix=app.config['APPLICATION_ROOT'] + '/user')
