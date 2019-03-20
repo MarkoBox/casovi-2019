@@ -11,6 +11,7 @@ class Config:
 
     # ********** DATABASE ***********************
     DATABASE_PATH = 'kpmg-db.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///kpmg-db.db'
 
     # ********** TESTING ************************
     TESTING = False

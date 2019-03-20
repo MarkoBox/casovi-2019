@@ -7,16 +7,19 @@ import sqlite3
 from utils import generate_token
 import jwt
 from flask import current_app, g
+from user.model import User
+from decorators import transactional
 
 user = Blueprint('user', __name__)
 
 
 @user.route('/register', methods=['POST'])
+@transactional
 def user_register():
     if request.method == 'POST':
         data = request.get_json(force=True)
         try:
-            db.create_user(data)
+            User.register(data)
         except sqlite3.IntegrityError:
             return Response(json.dumps({"message": "Username allready taken"}), status=400)
         return Response(status=204, mimetype='application/json')

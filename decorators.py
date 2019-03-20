@@ -40,3 +40,24 @@ def verify_token(allow_anon=False, roles_required=None, methods=None):
         return verify
 
     return verify_decorator(allow_anon) if callable(allow_anon) else verify_decorator
+
+
+def transactional(include_get=False):
+    def transactional_decorator(f):
+        @wraps(f)
+        def transaction(*args, **kwargs):
+            try:
+                result = f(*args, **kwargs)
+                # After done with a call, try to commit
+                if request.method in ('POST', 'PUT', 'DELETE') or (include_get is True and request.method == 'GET'):
+                    try:
+                        db.session.commit()
+                    except Exception:
+                        current_app.logger.exception('DB commit failed')
+                        abort(500, 'Server error')
+                return result
+            except Exception:
+                db.session.rollback()
+                raise
+        return transaction
+    return transactional_decorator(include_get) if callable(include_get) else transactional_decorator

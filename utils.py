@@ -2,6 +2,7 @@ import hashlib
 import datetime
 import jwt
 from flask import current_app
+import json
 
 
 def hash_password(password):
@@ -20,3 +21,19 @@ def generate_token(user_id, expiration=None):
         current_app.config.get('SECRET_KEY'),
         algorithm='HS256'
     ).decode("utf-8")
+
+
+def status_ok(result=None, message=None):
+    output = {'status': 'ok'}
+
+    if result:
+        output['result'] = result
+    else:
+        output['result'] = []
+
+    if message:
+        output['message'] = message[0]
+
+    return json.dumps(output)
+
+
