@@ -1,8 +1,0 @@
-DROP TABLE IF EXISTS kursevi;
-
-CREATE TABLE kursevi (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  valuta TEXT UNIQUE NOT NULL,
-  srednji_kurs REAL NOT NULL,
-  datum DATE NOT NULL
-);

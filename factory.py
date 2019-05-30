@@ -8,6 +8,7 @@ from logging.handlers import RotatingFileHandler
 import logging
 from flask_migrate import Migrate
 
+
 def create_app():
     dictConfig({
         'version': 1,
